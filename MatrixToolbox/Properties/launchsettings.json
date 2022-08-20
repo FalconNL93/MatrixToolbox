@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "MatrixToolbox (Unpackaged)": {
+        "commandName": "Project"
+      },
+      "MatrixToolbox (Package)": {
+        "commandName": "MsixPackage"
+      }
+    }
+}
