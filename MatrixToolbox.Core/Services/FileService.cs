@@ -1,7 +1,5 @@
 ﻿using System.Text;
-
 using MatrixToolbox.Core.Contracts.Services;
-
 using Newtonsoft.Json;
 
 namespace MatrixToolbox.Core.Services;

@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-
 using MatrixToolbox.Contracts.Services;
 using MatrixToolbox.ViewModels;
 using MatrixToolbox.Views;
-
 using Microsoft.UI.Xaml.Controls;
 
 namespace MatrixToolbox.Services;

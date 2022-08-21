@@ -21,7 +21,7 @@
             x:Uid="Settings_Title"
             Style="{StaticResource PageTitleStyle}" />
         <StackPanel
-            Grid.Row="1" 
+            Grid.Row="1"
             x:Name="ContentArea">
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">

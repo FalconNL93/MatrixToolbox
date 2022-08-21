@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-
 using Microsoft.UI.Xaml.Controls;
 
 namespace MatrixToolbox.Tests.MSTest;

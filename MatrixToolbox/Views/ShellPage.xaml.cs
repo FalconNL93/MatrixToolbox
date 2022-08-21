@@ -1,23 +1,16 @@
-﻿using MatrixToolbox.Contracts.Services;
+﻿using Windows.System;
+using MatrixToolbox.Contracts.Services;
 using MatrixToolbox.Helpers;
 using MatrixToolbox.ViewModels;
-
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
-using Windows.System;
-
 namespace MatrixToolbox.Views;
 
 public sealed partial class ShellPage : Page
 {
-    public ShellViewModel ViewModel
-    {
-        get;
-    }
-
     public ShellPage(ShellViewModel viewModel)
     {
         ViewModel = viewModel;
@@ -34,6 +27,8 @@ public sealed partial class ShellPage : Page
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
     }
 
+    public ShellViewModel ViewModel { get; }
+
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         TitleBarHelper.UpdateTitleBar(RequestedTheme);
@@ -41,26 +36,26 @@ public sealed partial class ShellPage : Page
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu));
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
 
-        ShellMenuBarSettingsButton.AddHandler(UIElement.PointerPressedEvent, new PointerEventHandler(ShellMenuBarSettingsButton_PointerPressed), true);
-        ShellMenuBarSettingsButton.AddHandler(UIElement.PointerReleasedEvent, new PointerEventHandler(ShellMenuBarSettingsButton_PointerReleased), true);
+        ShellMenuBarSettingsButton.AddHandler(PointerPressedEvent, new PointerEventHandler(ShellMenuBarSettingsButton_PointerPressed), true);
+        ShellMenuBarSettingsButton.AddHandler(PointerReleasedEvent, new PointerEventHandler(ShellMenuBarSettingsButton_PointerReleased), true);
     }
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
         var resource = args.WindowActivationState == WindowActivationState.Deactivated ? "WindowCaptionForegroundDisabled" : "WindowCaptionForeground";
 
-        AppTitleBarText.Foreground = (SolidColorBrush)App.Current.Resources[resource];
+        AppTitleBarText.Foreground = (SolidColorBrush) Application.Current.Resources[resource];
     }
 
     private void OnUnloaded(object sender, RoutedEventArgs e)
     {
-        ShellMenuBarSettingsButton.RemoveHandler(UIElement.PointerPressedEvent, (PointerEventHandler)ShellMenuBarSettingsButton_PointerPressed);
-        ShellMenuBarSettingsButton.RemoveHandler(UIElement.PointerReleasedEvent, (PointerEventHandler)ShellMenuBarSettingsButton_PointerReleased);
+        ShellMenuBarSettingsButton.RemoveHandler(PointerPressedEvent, (PointerEventHandler) ShellMenuBarSettingsButton_PointerPressed);
+        ShellMenuBarSettingsButton.RemoveHandler(PointerReleasedEvent, (PointerEventHandler) ShellMenuBarSettingsButton_PointerReleased);
     }
 
     private static KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers = null)
     {
-        var keyboardAccelerator = new KeyboardAccelerator() { Key = key };
+        var keyboardAccelerator = new KeyboardAccelerator {Key = key};
 
         if (modifiers.HasValue)
         {
@@ -83,21 +78,21 @@ public sealed partial class ShellPage : Page
 
     private void ShellMenuBarSettingsButton_PointerEntered(object sender, PointerRoutedEventArgs e)
     {
-        AnimatedIcon.SetState((UIElement)sender, "PointerOver");
+        AnimatedIcon.SetState((UIElement) sender, "PointerOver");
     }
 
     private void ShellMenuBarSettingsButton_PointerPressed(object sender, PointerRoutedEventArgs e)
     {
-        AnimatedIcon.SetState((UIElement)sender, "Pressed");
+        AnimatedIcon.SetState((UIElement) sender, "Pressed");
     }
 
     private void ShellMenuBarSettingsButton_PointerReleased(object sender, PointerRoutedEventArgs e)
     {
-        AnimatedIcon.SetState((UIElement)sender, "Normal");
+        AnimatedIcon.SetState((UIElement) sender, "Normal");
     }
 
     private void ShellMenuBarSettingsButton_PointerExited(object sender, PointerRoutedEventArgs e)
     {
-        AnimatedIcon.SetState((UIElement)sender, "Normal");
+        AnimatedIcon.SetState((UIElement) sender, "Normal");
     }
 }

@@ -1,15 +1,11 @@
 ﻿using System.Reflection;
 using System.Windows.Input;
-
+using Windows.ApplicationModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
 using MatrixToolbox.Contracts.Services;
 using MatrixToolbox.Helpers;
-
 using Microsoft.UI.Xaml;
-
-using Windows.ApplicationModel;
 
 namespace MatrixToolbox.ViewModels;
 
@@ -18,6 +14,23 @@ public class SettingsViewModel : ObservableRecipient
     private readonly IThemeSelectorService _themeSelectorService;
     private ElementTheme _elementTheme;
     private string _versionDescription;
+
+    public SettingsViewModel(IThemeSelectorService themeSelectorService)
+    {
+        _themeSelectorService = themeSelectorService;
+        _elementTheme = _themeSelectorService.Theme;
+        _versionDescription = GetVersionDescription();
+
+        SwitchThemeCommand = new RelayCommand<ElementTheme>(
+            async param =>
+            {
+                if (ElementTheme != param)
+                {
+                    ElementTheme = param;
+                    await _themeSelectorService.SetThemeAsync(param);
+                }
+            });
+    }
 
     public ElementTheme ElementTheme
     {
@@ -31,27 +44,7 @@ public class SettingsViewModel : ObservableRecipient
         set => SetProperty(ref _versionDescription, value);
     }
 
-    public ICommand SwitchThemeCommand
-    {
-        get;
-    }
-
-    public SettingsViewModel(IThemeSelectorService themeSelectorService)
-    {
-        _themeSelectorService = themeSelectorService;
-        _elementTheme = _themeSelectorService.Theme;
-        _versionDescription = GetVersionDescription();
-
-        SwitchThemeCommand = new RelayCommand<ElementTheme>(
-            async (param) =>
-            {
-                if (ElementTheme != param)
-                {
-                    ElementTheme = param;
-                    await _themeSelectorService.SetThemeAsync(param);
-                }
-            });
-    }
+    public ICommand SwitchThemeCommand { get; }
 
     private static string GetVersionDescription()
     {
@@ -61,7 +54,7 @@ public class SettingsViewModel : ObservableRecipient
         {
             var packageVersion = Package.Current.Id.Version;
 
-            version = new(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
+            version = new Version(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
         }
         else
         {

@@ -1,7 +1,6 @@
-﻿using MatrixToolbox.Core.Helpers;
-
-using Windows.Storage;
+﻿using Windows.Storage;
 using Windows.Storage.Streams;
+using MatrixToolbox.Core.Helpers;
 
 namespace MatrixToolbox.Helpers;
 
@@ -53,7 +52,7 @@ public static class SettingsStorageExtensions
 
         if (settings.Values.TryGetValue(key, out obj))
         {
-            return await Json.ToObjectAsync<T>((string)obj);
+            return await Json.ToObjectAsync<T>((string) obj);
         }
 
         return default;
@@ -80,7 +79,7 @@ public static class SettingsStorageExtensions
     {
         var item = await folder.TryGetItemAsync(fileName).AsTask().ConfigureAwait(false);
 
-        if ((item != null) && item.IsOfType(StorageItemTypes.File))
+        if (item != null && item.IsOfType(StorageItemTypes.File))
         {
             var storageFile = await folder.GetFileAsync(fileName);
             var content = await storageFile.ReadBytesAsync();
@@ -96,7 +95,7 @@ public static class SettingsStorageExtensions
         {
             using IRandomAccessStream stream = await file.OpenReadAsync();
             using var reader = new DataReader(stream.GetInputStreamAt(0));
-            await reader.LoadAsync((uint)stream.Size);
+            await reader.LoadAsync((uint) stream.Size);
             var bytes = new byte[stream.Size];
             reader.ReadBytes(bytes);
             return bytes;

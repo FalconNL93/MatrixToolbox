@@ -1,6 +1,5 @@
 ﻿using MatrixToolbox.Contracts.Services;
 using MatrixToolbox.ViewModels;
-
 using Microsoft.UI.Xaml;
 
 namespace MatrixToolbox.Activation;
@@ -20,7 +19,7 @@ public class DefaultActivationHandler : ActivationHandler<LaunchActivatedEventAr
         return _navigationService.Frame?.Content == null;
     }
 
-    protected async override Task HandleInternalAsync(LaunchActivatedEventArgs args)
+    protected override async Task HandleInternalAsync(LaunchActivatedEventArgs args)
     {
         _navigationService.NavigateTo(typeof(MainViewModel).FullName!, args.Arguments);
 

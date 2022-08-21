@@ -1,6 +1,5 @@
 ﻿using MatrixToolbox.Contracts.Services;
 using MatrixToolbox.Helpers;
-
 using Microsoft.UI.Xaml;
 
 namespace MatrixToolbox.Services;
@@ -9,14 +8,14 @@ public class ThemeSelectorService : IThemeSelectorService
 {
     private const string SettingsKey = "AppBackgroundRequestedTheme";
 
-    public ElementTheme Theme { get; set; } = ElementTheme.Default;
-
     private readonly ILocalSettingsService _localSettingsService;
 
     public ThemeSelectorService(ILocalSettingsService localSettingsService)
     {
         _localSettingsService = localSettingsService;
     }
+
+    public ElementTheme Theme { get; set; } = ElementTheme.Default;
 
     public async Task InitializeAsync()
     {

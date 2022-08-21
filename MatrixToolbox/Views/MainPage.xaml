@@ -6,20 +6,35 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="48" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Grid>
+        <ItemsControl IsEnabled="{x:Bind ViewModel.ApiSettingsValid}">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Command="{x:Bind ViewModel.RefreshCommand}" Content="Refresh" />
+                    <Button Command="{x:Bind ViewModel.ClearCommand}" Content="Clear" />
+                </StackPanel>
+                <TextBlock Text="{x:Bind ViewModel.Rooms.Count, Mode=OneWay}" />
 
-        <TextBlock
-            Grid.Row="0"
-            x:Uid="Main_Title"
-            Style="{StaticResource PageTitleStyle}" />
+                <ListBox ItemsSource="{x:Bind ViewModel.Rooms, Mode=OneWay}"
+                         DisplayMemberPath="Creator"
+                         Height="164" />
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="UserId:" />
+                <TextBox Text="{x:Bind ViewModel.ServiceNotice.UserId, Mode=TwoWay}" />
+                <TextBlock Text="Message" />
+                <TextBox Text="{x:Bind ViewModel.ServiceNotice.Content.Body, Mode=TwoWay}" />
+                <TextBlock Text="Message Type" />
+                <TextBox Text="{x:Bind ViewModel.ServiceNotice.Content.Msgtype, Mode=TwoWay}" />
+                <Button Command="{x:Bind ViewModel.PostServiceNotice}" CommandParameter="{x:Bind ViewModel.ServiceNotice, Mode = TwoWay}" Content="Post" />
 
-        <Grid Grid.Row="1">
-            
-        </Grid>
-        
+                <TextBlock Text="Response" />
+                <TextBox
+                    Text="{x:Bind ViewModel.Response, Mode=OneWay}"
+                    TextWrapping="Wrap"
+                    MinHeight="10"
+                    AcceptsReturn="True" />
+            </StackPanel>
+        </ItemsControl>
     </Grid>
 </Page>
