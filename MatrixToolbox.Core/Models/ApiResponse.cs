@@ -6,7 +6,7 @@ public class ApiResponse<T>
 {
     [JsonProperty("errcode")]
     public string Response { get; set; }
-    
+
     [JsonIgnore]
     public string Raw { get; set; }
 

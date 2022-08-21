@@ -20,7 +20,7 @@ public class MainViewModel : ObservableRecipient
     {
         _adminService = adminService;
         RefreshCommand = new AsyncRelayCommand(OnRefresh, () => ApiSettingsValid);
-        ClearCommand = new AsyncRelayCommand(OnClear, () => ApiSettingsValid);
+        ClearCommand = new RelayCommand(OnClear, () => ApiSettingsValid);
         PostServiceNotice = new AsyncRelayCommand<ServiceNotice>(OnPostServiceNotice, _ => ApiSettingsValid);
         _apiOptions = apiOptions.Value;
 
@@ -32,7 +32,7 @@ public class MainViewModel : ObservableRecipient
 
     public ObservableCollection<RoomModel> Rooms { get; } = new();
     public AsyncRelayCommand RefreshCommand { get; }
-    public AsyncRelayCommand ClearCommand { get; }
+    public RelayCommand ClearCommand { get; }
     public AsyncRelayCommand<ServiceNotice> PostServiceNotice { get; }
 
     public string Response
@@ -75,7 +75,7 @@ public class MainViewModel : ObservableRecipient
         }
     }
 
-    private async Task OnClear()
+    private void OnClear()
     {
         Rooms.Clear();
     }

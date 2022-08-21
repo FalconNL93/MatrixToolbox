@@ -6,8 +6,8 @@ namespace MatrixToolbox.Core.Models;
 
 public class ServiceNotice : INotifyPropertyChanged, IMatrixResult
 {
-    private string _userId;
     private ContentModel _content = new();
+    private string _userId;
 
     public string UserId
     {
@@ -25,7 +25,11 @@ public class ServiceNotice : INotifyPropertyChanged, IMatrixResult
 
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        if (EqualityComparer<T>.Default.Equals(field, value))
+        {
+            return false;
+        }
+
         field = value;
         OnPropertyChanged(propertyName);
         return true;

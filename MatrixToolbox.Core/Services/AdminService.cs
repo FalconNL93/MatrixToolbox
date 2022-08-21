@@ -9,8 +9,8 @@ namespace MatrixToolbox.Core.Services;
 
 public class AdminService
 {
-    private readonly HttpClient _client;
     private readonly MatrixApiOptions _apiOptions;
+    private readonly HttpClient _client;
     private readonly JsonSerializerSettings _serializerOptions = new() {ContractResolver = new DefaultContractResolver {NamingStrategy = new SnakeCaseNamingStrategy()}};
 
     public AdminService(HttpClient client, IOptions<MatrixApiOptions> apiOptions)
@@ -45,7 +45,10 @@ public class AdminService
         ));
     }
 
-    public async Task<RoomsModel> GetRooms() => await GetV1<RoomsModel>("rooms");
+    public async Task<RoomsModel> GetRooms()
+    {
+        return await GetV1<RoomsModel>("rooms");
+    }
 
     public async Task<ApiResponse<ServiceNoticeResult>> PostServiceNotice(ServiceNotice serviceNotice)
     {
