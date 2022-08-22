@@ -1,39 +1,36 @@
-﻿using System.Diagnostics;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows.Input;
 using Windows.ApplicationModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MatrixToolbox.Contracts.Services;
-using MatrixToolbox.Core.Contracts.Services;
-using MatrixToolbox.Core.Models;
 using MatrixToolbox.Helpers;
-using Microsoft.Extensions.Options;
+using MatrixToolbox.Services;
 using Microsoft.UI.Xaml;
 
 namespace MatrixToolbox.ViewModels;
 
 public class SettingsViewModel : ObservableRecipient
 {
-    private readonly IFileService _fileService;
     private readonly IThemeSelectorService _themeSelectorService;
+    public SettingsService Settings { get; }
     private ElementTheme _elementTheme;
     private string _versionDescription;
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService, IOptions<MatrixApiOptions> apiOptions, IFileService fileService)
+    public SettingsViewModel(
+        IThemeSelectorService themeSelectorService,
+        SettingsService settings)
     {
         _themeSelectorService = themeSelectorService;
-        _fileService = fileService;
-        MatrixApiOptions = apiOptions.Value;
+        Settings = settings;
         _elementTheme = _themeSelectorService.Theme;
         _versionDescription = GetVersionDescription();
 
-        SaveMatrixOptions = new RelayCommand(OnSaveOptions);
+        SaveSettings = new RelayCommand(OnSaveOptions);
         SwitchThemeCommand = new RelayCommand<ElementTheme>(OnThemeSwitch);
     }
 
-    public MatrixApiOptions MatrixApiOptions { get; }
-    public RelayCommand SaveMatrixOptions { get; }
+    public RelayCommand SaveSettings { get; }
 
     public ElementTheme ElementTheme
     {
@@ -51,15 +48,7 @@ public class SettingsViewModel : ObservableRecipient
 
     private void OnSaveOptions()
     {
-        try
-        {
-            _fileService.Save(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "appsettings.user.json", new {MatrixApiOptions});
-        }
-        catch (Exception e)
-        {
-            Debug.WriteLine(e);
-            throw;
-        }
+        Settings.Save();
     }
 
     private async void OnThemeSwitch(ElementTheme param)

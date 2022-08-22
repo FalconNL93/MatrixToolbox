@@ -11,12 +11,12 @@ namespace MatrixToolbox.ViewModels;
 public class MainViewModel : ObservableRecipient
 {
     private readonly AdminService _adminService;
-    private readonly MatrixApiOptions _apiOptions;
-    private string _response;
+    private readonly ApiOptions _apiOptions;
+    private string _response = string.Empty;
     private ServiceNotice _serviceNotice = new();
 
 
-    public MainViewModel(AdminService adminService, IOptions<MatrixApiOptions> apiOptions)
+    public MainViewModel(AdminService adminService, IOptions<ApiOptions> apiOptions)
     {
         _adminService = adminService;
         RefreshCommand = new AsyncRelayCommand(OnRefresh, () => ApiSettingsValid);
@@ -63,7 +63,7 @@ public class MainViewModel : ObservableRecipient
         try
         {
             Rooms.Clear();
-            foreach (var room in rooms.Rooms)
+            foreach (var room in rooms.Rooms.Where(room => !string.IsNullOrEmpty(room.Name)))
             {
                 Rooms.Add(room);
             }

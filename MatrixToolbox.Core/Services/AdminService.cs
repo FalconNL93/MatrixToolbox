@@ -9,11 +9,11 @@ namespace MatrixToolbox.Core.Services;
 
 public class AdminService
 {
-    private readonly MatrixApiOptions _apiOptions;
+    private readonly ApiOptions _apiOptions;
     private readonly HttpClient _client;
     private readonly JsonSerializerSettings _serializerOptions = new() {ContractResolver = new DefaultContractResolver {NamingStrategy = new SnakeCaseNamingStrategy()}};
 
-    public AdminService(HttpClient client, IOptions<MatrixApiOptions> apiOptions)
+    public AdminService(HttpClient client, IOptions<ApiOptions> apiOptions)
     {
         _client = client;
         _apiOptions = apiOptions.Value;

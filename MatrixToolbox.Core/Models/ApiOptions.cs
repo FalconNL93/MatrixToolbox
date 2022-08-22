@@ -1,6 +1,6 @@
 ﻿namespace MatrixToolbox.Core.Models;
 
-public class MatrixApiOptions
+public class ApiOptions
 {
     public string AccessToken { get; set; }
     public string Server { get; set; }

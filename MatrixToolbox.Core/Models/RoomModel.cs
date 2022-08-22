@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using MatrixToolbox.Core.Contracts;
 
 namespace MatrixToolbox.Core.Models;
 
-public class RoomsModel : IMatrixResult
+public class RoomsModel
 {
     public List<RoomModel> Rooms { get; set; }
 }
 
-public class RoomModel : IMatrixResult, INotifyPropertyChanged
+public class RoomModel : INotifyPropertyChanged
 {
     private string _name;
     private string _roomId;

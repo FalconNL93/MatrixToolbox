@@ -1,9 +1,7 @@
 ﻿using MatrixToolbox.Activation;
 using MatrixToolbox.Contracts.Services;
-using MatrixToolbox.Core.Contracts.Services;
 using MatrixToolbox.Core.Models;
 using MatrixToolbox.Core.Services;
-using MatrixToolbox.Models;
 using MatrixToolbox.Notifications;
 using MatrixToolbox.Services;
 using MatrixToolbox.ViewModels;
@@ -18,6 +16,8 @@ namespace MatrixToolbox;
 
 public partial class App : Application
 {
+    public const string UserConfigurationFile = "config.json";
+
     public App()
     {
         InitializeComponent();
@@ -27,7 +27,7 @@ public partial class App : Application
             .UseContentRoot(AppContext.BaseDirectory)
             .ConfigureAppConfiguration((_, config) =>
             {
-                config.AddJsonFile("appsettings.user.json", true, false);
+                config.AddJsonFile(UserConfigurationFile, true, false);
             })
             .ConfigureServices((context, services) =>
             {
@@ -36,13 +36,10 @@ public partial class App : Application
                 services.AddTransient<IActivationHandler, AppNotificationActivationHandler>();
 
                 services.AddSingleton<IAppNotificationService, AppNotificationService>();
-                services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
                 services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
                 services.AddSingleton<IActivationService, ActivationService>();
                 services.AddSingleton<IPageService, PageService>();
                 services.AddSingleton<INavigationService, NavigationService>();
-
-                services.AddSingleton<IFileService, FileService>();
 
                 services.AddTransient<SettingsViewModel>();
                 services.AddTransient<SettingsPage>();
@@ -51,10 +48,10 @@ public partial class App : Application
                 services.AddTransient<ShellPage>();
                 services.AddTransient<ShellViewModel>();
 
+                services.AddSingleton<SettingsService>();
                 services.AddHttpClient<AdminService>();
 
-                services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
-                services.Configure<MatrixApiOptions>(context.Configuration.GetSection(nameof(MatrixApiOptions)));
+                services.Configure<ApiOptions>(context.Configuration.GetSection(nameof(ApiOptions)));
             }).Build();
 
         GetService<IAppNotificationService>().Initialize();

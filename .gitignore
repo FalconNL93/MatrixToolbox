@@ -367,3 +367,4 @@ FodyWeavers.xsd
 
 # Project specific
 /MatrixToolbox/appsettings.user.json
+/MatrixToolbox/config.json

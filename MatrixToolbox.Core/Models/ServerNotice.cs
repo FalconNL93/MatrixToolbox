@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using MatrixToolbox.Core.Contracts;
 
 namespace MatrixToolbox.Core.Models;
 
-public class ServiceNotice : INotifyPropertyChanged, IMatrixResult
+public class ServiceNotice : INotifyPropertyChanged
 {
     private ContentModel _content = new();
     private string _userId;
@@ -41,7 +40,7 @@ public class ServiceNotice : INotifyPropertyChanged, IMatrixResult
     }
 }
 
-public class ServiceNoticeResult : IMatrixResult
+public class ServiceNoticeResult
 {
     public string EventId { get; set; }
 }

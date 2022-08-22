@@ -18,20 +18,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Manifest Include="$(ApplicationManifest)"/>
+        <Manifest Include="$(ApplicationManifest)" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1"/>
-        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0"/>
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.4"/>
-        <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.8"/>
-        <PackageReference Include="WinUIEx" Version="1.8.0"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.4" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.8" />
+        <PackageReference Include="WinUIEx" Version="1.8.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MatrixToolbox.Core\MatrixToolbox.Core.csproj"/>
+        <ProjectReference Include="..\MatrixToolbox.Core\MatrixToolbox.Core.csproj" />
     </ItemGroup>
     <ItemGroup>
         <None Update="appsettings.json">
@@ -43,7 +43,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
-        <ProjectCapability Include="Msix"/>
+        <ProjectCapability Include="Msix" />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
@@ -52,7 +52,7 @@
 
     <Target Name="_RemoveFrameworkReferences" BeforeTargets="_ConvertItems;_CalculateInputsForGenerateCurrentProjectAppxManifest">
         <ItemGroup>
-            <FrameworkSdkReference Remove="@(FrameworkSdkReference)" Condition="$([System.String]::Copy('%(FrameworkSdkReference.SDKName)').StartsWith('Microsoft.WindowsAppRuntime.'))"/>
+            <FrameworkSdkReference Remove="@(FrameworkSdkReference)" Condition="$([System.String]::Copy('%(FrameworkSdkReference.SDKName)').StartsWith('Microsoft.WindowsAppRuntime.'))" />
         </ItemGroup>
     </Target>
 </Project>
