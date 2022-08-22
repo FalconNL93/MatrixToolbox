@@ -21,8 +21,13 @@
             x:Uid="Settings_Title"
             Style="{StaticResource PageTitleStyle}" />
         <StackPanel
-            Grid.Row="1"
-            x:Name="ContentArea">
+            Grid.Row="1">
+            <TextBlock Text="API Settings" Style="{ThemeResource SubtitleTextBlockStyle}" />
+            <TextBlock Text="Server" Style="{ThemeResource BaseTextBlockStyle}" />
+            <TextBox Text="{x:Bind ViewModel.MatrixApiOptions.Server, Mode=TwoWay}" />
+            <TextBlock Text="Access Token" Style="{ThemeResource BaseTextBlockStyle}" />
+            <TextBox Text="{x:Bind ViewModel.MatrixApiOptions.AccessToken, Mode=TwoWay}" />
+            <Button Command="{x:Bind ViewModel.SaveMatrixOptions}" Content="Save" />
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_Theme" />
