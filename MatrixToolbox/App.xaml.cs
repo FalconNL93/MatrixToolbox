@@ -37,7 +37,7 @@ public partial class App : Application
                 services.AddTransient<IActivationHandler, AppNotificationActivationHandler>();
 
                 services.AddSingleton<IAppNotificationService, AppNotificationService>();
-                services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
+                services.AddSingleton<ThemeSelectorService>();
                 services.AddSingleton<IActivationService, ActivationService>();
                 services.AddSingleton<IPageService, PageService>();
                 services.AddSingleton<INavigationService, NavigationService>();

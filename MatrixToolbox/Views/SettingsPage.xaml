@@ -24,9 +24,9 @@
             Grid.Row="1">
             <TextBlock Text="API Settings" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <TextBlock Text="Server" Style="{ThemeResource BaseTextBlockStyle}" />
-            <TextBox Text="{x:Bind ViewModel.Settings.ApiOptions.Server, Mode=TwoWay}" />
+            <TextBox Text="{x:Bind ViewModel.ApiOptions.Server, Mode=TwoWay}" />
             <TextBlock Text="Access Token" Style="{ThemeResource BaseTextBlockStyle}" />
-            <TextBox Text="{x:Bind ViewModel.Settings.ApiOptions.AccessToken, Mode=TwoWay}" />
+            <TextBox Text="{x:Bind ViewModel.ApiOptions.AccessToken, Mode=TwoWay}" />
             <Button Command="{x:Bind ViewModel.SaveSettings}" Content="Save" />
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">

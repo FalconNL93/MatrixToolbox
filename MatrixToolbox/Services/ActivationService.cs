@@ -10,10 +10,10 @@ public class ActivationService : IActivationService
 {
     private readonly IEnumerable<IActivationHandler> _activationHandlers;
     private readonly ActivationHandler<LaunchActivatedEventArgs> _defaultHandler;
-    private readonly IThemeSelectorService _themeSelectorService;
+    private readonly ThemeSelectorService _themeSelectorService;
     private UIElement? _shell;
 
-    public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler, IEnumerable<IActivationHandler> activationHandlers, IThemeSelectorService themeSelectorService)
+    public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler, IEnumerable<IActivationHandler> activationHandlers, ThemeSelectorService themeSelectorService)
     {
         _defaultHandler = defaultHandler;
         _activationHandlers = activationHandlers;

@@ -3,32 +3,42 @@ using System.Windows.Input;
 using Windows.ApplicationModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MatrixToolbox.Contracts.Services;
+using MatrixToolbox.Core.Models;
 using MatrixToolbox.Helpers;
+using MatrixToolbox.Models;
 using MatrixToolbox.Services;
+using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
 
 namespace MatrixToolbox.ViewModels;
 
 public class SettingsViewModel : ObservableRecipient
 {
-    private readonly IThemeSelectorService _themeSelectorService;
-    public SettingsService Settings { get; }
+    private readonly SettingsService _settings;
+    private readonly ThemeSelectorService _themeSelectorService;
     private ElementTheme _elementTheme;
     private string _versionDescription;
 
     public SettingsViewModel(
-        IThemeSelectorService themeSelectorService,
-        SettingsService settings)
+        ThemeSelectorService themeSelectorService,
+        SettingsService settings,
+        IOptions<GeneralOptions> generalOptions,
+        IOptions<ApiOptions> apiOptions
+    )
     {
         _themeSelectorService = themeSelectorService;
-        Settings = settings;
+        _settings = settings;
+        GeneralOptions = generalOptions.Value;
+        ApiOptions = apiOptions.Value;
         _elementTheme = _themeSelectorService.Theme;
         _versionDescription = GetVersionDescription();
 
         SaveSettings = new RelayCommand(OnSaveOptions);
         SwitchThemeCommand = new RelayCommand<ElementTheme>(OnThemeSwitch);
     }
+
+    public GeneralOptions GeneralOptions { get; }
+    public ApiOptions ApiOptions { get; }
 
     public RelayCommand SaveSettings { get; }
 
@@ -48,7 +58,7 @@ public class SettingsViewModel : ObservableRecipient
 
     private void OnSaveOptions()
     {
-        Settings.Save();
+        _settings.Save();
     }
 
     private async void OnThemeSwitch(ElementTheme param)

@@ -9,15 +9,15 @@ namespace MatrixToolbox.Services;
 
 public class SettingsService
 {
-    private readonly JsonSerializerSettings _serializerSettings = new();
-    public ApiOptions ApiOptions { get; }
-    public GeneralOptions GeneralOptions { get; }
+    private readonly ApiOptions _apiOptions;
     private readonly string? _appDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+    private readonly GeneralOptions _generalOptions;
+    private readonly JsonSerializerSettings _serializerSettings = new();
 
     public SettingsService(IOptions<ApiOptions> apiOptions, IOptions<GeneralOptions> generalOptions)
     {
-        ApiOptions = apiOptions.Value;
-        GeneralOptions = generalOptions.Value;
+        _apiOptions = apiOptions.Value;
+        _generalOptions = generalOptions.Value;
     }
 
     public void Save()
@@ -29,8 +29,8 @@ public class SettingsService
 
         var settingsCombined = new SettingsModel
         {
-            ApiOptions = ApiOptions,
-            GeneralOptions = GeneralOptions
+            ApiOptions = _apiOptions,
+            GeneralOptions = _generalOptions
         };
         var fileContent = JsonConvert.SerializeObject(settingsCombined, _serializerSettings);
         File.WriteAllText(Path.Combine(_appDirectory, App.UserConfigurationFile), fileContent, Encoding.UTF8);
