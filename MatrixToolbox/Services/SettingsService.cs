@@ -11,11 +11,13 @@ public class SettingsService
 {
     private readonly JsonSerializerSettings _serializerSettings = new();
     public ApiOptions ApiOptions { get; }
+    public GeneralOptions GeneralOptions { get; }
     private readonly string? _appDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-    public SettingsService(IOptions<ApiOptions> apiOptions)
+    public SettingsService(IOptions<ApiOptions> apiOptions, IOptions<GeneralOptions> generalOptions)
     {
         ApiOptions = apiOptions.Value;
+        GeneralOptions = generalOptions.Value;
     }
 
     public void Save()
@@ -25,7 +27,11 @@ public class SettingsService
             return;
         }
 
-        var settingsCombined = new SettingsModel {ApiOptions = ApiOptions};
+        var settingsCombined = new SettingsModel
+        {
+            ApiOptions = ApiOptions,
+            GeneralOptions = GeneralOptions
+        };
         var fileContent = JsonConvert.SerializeObject(settingsCombined, _serializerSettings);
         File.WriteAllText(Path.Combine(_appDirectory, App.UserConfigurationFile), fileContent, Encoding.UTF8);
     }

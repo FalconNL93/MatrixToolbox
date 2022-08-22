@@ -45,10 +45,13 @@ public class ThemeSelectorService : IThemeSelectorService
 
     private async Task<ElementTheme> LoadThemeFromSettingsAsync()
     {
-        return ElementTheme.Default;
+        var theme = _settingsService.GeneralOptions.Theme;
+
+        return theme;
     }
 
     private async Task SaveThemeInSettingsAsync(ElementTheme theme)
     {
+        _settingsService.GeneralOptions.Theme = theme;
     }
 }

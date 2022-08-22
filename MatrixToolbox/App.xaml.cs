@@ -2,6 +2,7 @@
 using MatrixToolbox.Contracts.Services;
 using MatrixToolbox.Core.Models;
 using MatrixToolbox.Core.Services;
+using MatrixToolbox.Models;
 using MatrixToolbox.Notifications;
 using MatrixToolbox.Services;
 using MatrixToolbox.ViewModels;
@@ -51,6 +52,7 @@ public partial class App : Application
                 services.AddSingleton<SettingsService>();
                 services.AddHttpClient<AdminService>();
 
+                services.Configure<GeneralOptions>(context.Configuration.GetSection(nameof(GeneralOptions)));
                 services.Configure<ApiOptions>(context.Configuration.GetSection(nameof(ApiOptions)));
             }).Build();
 
