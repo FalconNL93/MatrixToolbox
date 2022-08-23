@@ -1,8 +1,6 @@
-﻿using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MatrixToolbox.Contracts.Services;
-using Microsoft.UI.Xaml;
+using MatrixToolbox.Views;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace MatrixToolbox.ViewModels;
@@ -10,24 +8,18 @@ namespace MatrixToolbox.ViewModels;
 public class ShellViewModel : ObservableRecipient
 {
     private bool _isBackEnabled;
+    private object? _selected;
 
-    public ShellViewModel(INavigationService navigationService)
+    public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService)
     {
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
-
-        MenuFileExitCommand = new RelayCommand(OnMenuFileExit);
-        MenuSettingsCommand = new RelayCommand(OnMenuSettings);
-        MenuViewsMainCommand = new RelayCommand(OnMenuViewsMain);
+        NavigationViewService = navigationViewService;
     }
 
-    public ICommand MenuFileExitCommand { get; }
-
-    public ICommand MenuSettingsCommand { get; }
-
-    public ICommand MenuViewsMainCommand { get; }
-
     public INavigationService NavigationService { get; }
+
+    public INavigationViewService NavigationViewService { get; }
 
     public bool IsBackEnabled
     {
@@ -35,23 +27,26 @@ public class ShellViewModel : ObservableRecipient
         set => SetProperty(ref _isBackEnabled, value);
     }
 
+    public object? Selected
+    {
+        get => _selected;
+        set => SetProperty(ref _selected, value);
+    }
+
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
         IsBackEnabled = NavigationService.CanGoBack;
-    }
 
-    private void OnMenuFileExit()
-    {
-        Application.Current.Exit();
-    }
+        if (e.SourcePageType == typeof(SettingsPage))
+        {
+            Selected = NavigationViewService.SettingsItem;
+            return;
+        }
 
-    private void OnMenuSettings()
-    {
-        NavigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
-    }
-
-    private void OnMenuViewsMain()
-    {
-        NavigationService.NavigateTo(typeof(MainViewModel).FullName!);
+        var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
+        if (selectedItem != null)
+        {
+            Selected = selectedItem;
+        }
     }
 }

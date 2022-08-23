@@ -6,19 +6,21 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
+    <Grid x:Name="ContentArea">
         <ScrollViewer>
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 <Button Command="{x:Bind ViewModel.ShowSettings}" Content="Settings" />
-
-                <ItemsControl IsEnabled="{x:Bind ViewModel.ApiSettingsValid}">
+                <ItemsControl Grid.Row="1" IsEnabled="{x:Bind ViewModel.ApiSettingsValid}">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Button Command="{x:Bind ViewModel.RefreshCommand}" Content="Refresh" />
                             <Button Command="{x:Bind ViewModel.ClearCommand}" Content="Clear" />
                         </StackPanel>
                         <TextBlock Text="{x:Bind ViewModel.Rooms.Count, Mode=OneWay}" />
-
                         <ListBox ItemsSource="{x:Bind ViewModel.Rooms, Mode=OneWay}" DisplayMemberPath="Name" Height="164" />
                     </StackPanel>
                     <StackPanel>

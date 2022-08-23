@@ -11,7 +11,7 @@
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
-    <Grid>
+    <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="80" />
@@ -66,12 +66,8 @@
         <Grid Row="1" BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Orientation="Horizontal">
-                <Button Command="{x:Bind ViewModel.GoBack}" Margin="{StaticResource SmallRightMargin}" Content="Back" MinWidth="{StaticResource ButtonMinWidth}" />
-            </StackPanel>
-            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="{StaticResource MediumTopBottomMargin}" HorizontalAlignment="Right">
+            <StackPanel Orientation="Horizontal" Margin="{StaticResource MediumTopBottomMargin}" HorizontalAlignment="Right">
                 <Button Command="{x:Bind ViewModel.SaveSettings}" Margin="{StaticResource SmallRightMargin}" Content="Save" MinWidth="{StaticResource ButtonMinWidth}" Style="{StaticResource AccentButtonStyle}" />
                 <Button Command="{x:Bind ViewModel.ReloadCommand}" Content="Reload" MinWidth="{StaticResource ButtonMinWidth}" />
             </StackPanel>

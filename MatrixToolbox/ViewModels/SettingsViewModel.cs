@@ -15,13 +15,13 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly SettingsService _settings;
-    private readonly ThemeSelectorService _themeSelectorService;
+    private readonly IThemeSelectorService _themeSelectorService;
     private ElementTheme _elementTheme;
 
 
     public SettingsViewModel(
         INavigationService navigationService,
-        ThemeSelectorService themeSelectorService,
+        IThemeSelectorService themeSelectorService,
         SettingsService settings,
         IOptionsMonitor<GeneralOptions> generalOptions,
         IOptionsMonitor<ApiOptions> apiOptions
@@ -38,7 +38,6 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         SaveSettings = new RelayCommand(() => _settings.Save());
         SwitchThemeCommand = new RelayCommand<ElementTheme>(OnThemeSwitch);
         ReloadCommand = new RelayCommand(() => _navigationService.NavigateTo(GetType().FullName, PageParameters.ReloadPage));
-        GoBack = new RelayCommand(() => _navigationService.GoBack(), () => _navigationService.CanGoBack);
     }
 
     public RelayCommand ReloadCommand { get; }
@@ -46,7 +45,6 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
     public ApiOptions ApiOptions { get; }
 
     public RelayCommand SaveSettings { get; }
-    public RelayCommand GoBack { get; }
 
     public ElementTheme ElementTheme
     {

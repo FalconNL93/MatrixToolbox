@@ -3,7 +3,7 @@ using System.Web;
 using MatrixToolbox.Contracts.Services;
 using Microsoft.Windows.AppNotifications;
 
-namespace MatrixToolbox.Notifications;
+namespace MatrixToolbox.Services;
 
 public class AppNotificationService : IAppNotificationService
 {
@@ -47,15 +47,6 @@ public class AppNotificationService : IAppNotificationService
 
     public void OnNotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
     {
-        //// }
-        ////    });
-        ////        _navigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
-        ////    {
-        ////    App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-        //// {
-        //// if (ParseArguments(args.Argument)["action"] == "Settings")
-        //// // Navigate to a specific page based on the notification arguments.
-        // TODO: Handle notification invocations when your app is already running.
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
             App.MainWindow.ShowMessageDialogAsync("TODO: Handle notification invocations when your app is already running.", "Notification Invoked");

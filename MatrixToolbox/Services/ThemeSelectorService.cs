@@ -1,24 +1,27 @@
-﻿using MatrixToolbox.Helpers;
+﻿using MatrixToolbox.Contracts.Services;
+using MatrixToolbox.Helpers;
 using MatrixToolbox.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
 
 namespace MatrixToolbox.Services;
 
-public class ThemeSelectorService
+public class ThemeSelectorService : IThemeSelectorService
 {
-    private readonly GeneralOptions _options;
+    private const string SettingsKey = "AppBackgroundRequestedTheme";
 
-    public ThemeSelectorService(IOptionsMonitor<GeneralOptions> generalOptions)
+    private readonly GeneralOptions _generalOptions;
+
+    public ThemeSelectorService(IOptions<GeneralOptions> generalOptions)
     {
-        _options = generalOptions.CurrentValue;
+        _generalOptions = generalOptions.Value;
     }
 
     public ElementTheme Theme { get; set; } = ElementTheme.Default;
 
     public async Task InitializeAsync()
     {
-        Theme = _options.Theme;
+        Theme = await LoadThemeFromSettingsAsync();
         await Task.CompletedTask;
     }
 
@@ -27,7 +30,7 @@ public class ThemeSelectorService
         Theme = theme;
 
         await SetRequestedThemeAsync();
-        _options.Theme = theme;
+        await SaveThemeInSettingsAsync(Theme);
     }
 
     public async Task SetRequestedThemeAsync()
@@ -40,5 +43,15 @@ public class ThemeSelectorService
         }
 
         await Task.CompletedTask;
+    }
+
+    private async Task<ElementTheme> LoadThemeFromSettingsAsync()
+    {
+        return _generalOptions.Theme;
+    }
+
+    private async Task SaveThemeInSettingsAsync(ElementTheme theme)
+    {
+        _generalOptions.Theme = theme;
     }
 }

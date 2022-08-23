@@ -1,9 +1,9 @@
-﻿using MatrixToolbox.Activation;
+﻿using System.Diagnostics;
+using MatrixToolbox.Activation;
 using MatrixToolbox.Contracts.Services;
 using MatrixToolbox.Core.Models;
 using MatrixToolbox.Core.Services;
 using MatrixToolbox.Models;
-using MatrixToolbox.Notifications;
 using MatrixToolbox.Services;
 using MatrixToolbox.ViewModels;
 using MatrixToolbox.Views;
@@ -21,44 +21,53 @@ public partial class App : Application
 
     public App()
     {
-        InitializeComponent();
+        try
+        {
+            InitializeComponent();
 
-        Host = Microsoft.Extensions.Hosting.Host
-            .CreateDefaultBuilder()
-            .UseContentRoot(AppContext.BaseDirectory)
-            .ConfigureAppConfiguration((_, config) =>
-            {
-                config.AddJsonFile(UserConfigurationFile, true, true);
-            })
-            .ConfigureServices((context, services) =>
-            {
-                services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
+            Host = Microsoft.Extensions.Hosting.Host
+                .CreateDefaultBuilder()
+                .UseContentRoot(AppContext.BaseDirectory)
+                .ConfigureAppConfiguration((_, config) =>
+                {
+                    config.AddJsonFile(UserConfigurationFile, true, true);
+                })
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
-                services.AddTransient<IActivationHandler, AppNotificationActivationHandler>();
+                    services.AddTransient<IActivationHandler, AppNotificationActivationHandler>();
 
-                services.AddSingleton<IAppNotificationService, AppNotificationService>();
-                services.AddSingleton<ThemeSelectorService>();
-                services.AddSingleton<IActivationService, ActivationService>();
-                services.AddSingleton<IPageService, PageService>();
-                services.AddSingleton<INavigationService, NavigationService>();
+                    services.AddSingleton<IAppNotificationService, AppNotificationService>();
+                    services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
+                    services.AddSingleton<IActivationService, ActivationService>();
+                    services.AddSingleton<IPageService, PageService>();
+                    services.AddSingleton<INavigationService, NavigationService>();
+                    services.AddTransient<INavigationViewService, NavigationViewService>();
 
-                services.AddTransient<SettingsViewModel>();
-                services.AddTransient<SettingsPage>();
-                services.AddTransient<MainViewModel>();
-                services.AddTransient<MainPage>();
-                services.AddTransient<ShellPage>();
-                services.AddTransient<ShellViewModel>();
+                    services.AddTransient<SettingsViewModel>();
+                    services.AddTransient<SettingsPage>();
+                    services.AddTransient<MainViewModel>();
+                    services.AddTransient<MainPage>();
+                    services.AddTransient<ShellPage>();
+                    services.AddTransient<ShellViewModel>();
 
-                services.AddSingleton<SettingsService>();
-                services.AddHttpClient<AdminService>();
+                    services.AddSingleton<SettingsService>();
+                    services.AddHttpClient<AdminService>();
 
-                services.Configure<GeneralOptions>(context.Configuration.GetSection(nameof(GeneralOptions)));
-                services.Configure<ApiOptions>(context.Configuration.GetSection(nameof(ApiOptions)));
-            }).Build();
+                    services.Configure<GeneralOptions>(context.Configuration.GetSection(nameof(GeneralOptions)));
+                    services.Configure<ApiOptions>(context.Configuration.GetSection(nameof(ApiOptions)));
+                }).Build();
 
-        GetService<IAppNotificationService>().Initialize();
+            GetService<IAppNotificationService>().Initialize();
 
-        UnhandledException += App_UnhandledException;
+            UnhandledException += App_UnhandledException;
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+            throw;
+        }
     }
 
     private IHost Host { get; }
@@ -78,6 +87,7 @@ public partial class App : Application
 
     private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
+        Debug.WriteLine(e);
     }
 
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
