@@ -11,7 +11,7 @@
         <Grid x:Name="AppTitleBar"
               Canvas.ZIndex="1"
               Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
-              IsHitTestVisible="True"
+              IsHitTestVisible="False"
               VerticalAlignment="Top">
             <Image Source="/Assets/WindowIcon.ico"
                    HorizontalAlignment="Left"
@@ -31,7 +31,9 @@
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
             IsSettingsVisible="True"
             ExpandedModeThresholdWidth="1280"
-            DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
+            DisplayModeChanged="OnDisplayModeChanged"
+            IsPaneToggleButtonVisible="False"
+            IsPaneOpen="False"
             Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Admin" helpers:NavigationHelper.NavigateTo="MatrixToolbox.ViewModels.MainViewModel">

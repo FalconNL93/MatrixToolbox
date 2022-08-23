@@ -42,17 +42,6 @@ public sealed partial class ShellPage : Page
         AppTitleBarText.Foreground = (SolidColorBrush) Application.Current.Resources[resource];
     }
 
-    private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
-    {
-        AppTitleBar.Margin = new Thickness
-        {
-            Left = sender.CompactPaneLength * (sender.DisplayMode == NavigationViewDisplayMode.Minimal ? 2 : 1),
-            Top = AppTitleBar.Margin.Top,
-            Right = AppTitleBar.Margin.Right,
-            Bottom = AppTitleBar.Margin.Bottom
-        };
-    }
-
     private static KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers = null)
     {
         var keyboardAccelerator = new KeyboardAccelerator {Key = key};
@@ -74,5 +63,16 @@ public sealed partial class ShellPage : Page
         var result = navigationService.GoBack();
 
         args.Handled = result;
+    }
+    
+    private void OnDisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
+    {
+        AppTitleBar.Margin = new Thickness()
+        {
+            Left = sender.CompactPaneLength * (sender.DisplayMode == NavigationViewDisplayMode.Minimal ? 2 : 1),
+            Top = AppTitleBar.Margin.Top,
+            Right = AppTitleBar.Margin.Right,
+            Bottom = AppTitleBar.Margin.Bottom
+        };
     }
 }

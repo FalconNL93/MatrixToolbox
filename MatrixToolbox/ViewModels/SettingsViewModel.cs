@@ -37,7 +37,7 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
 
         SaveSettings = new RelayCommand(() => _settings.Save());
         SwitchThemeCommand = new RelayCommand<ElementTheme>(OnThemeSwitch);
-        ReloadCommand = new RelayCommand(() => _navigationService.NavigateTo(GetType().FullName, PageParameters.ReloadPage));
+        ReloadCommand = new RelayCommand(OnReloadSettings);
     }
 
     public RelayCommand ReloadCommand { get; }
@@ -65,6 +65,11 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
 
     public void OnNavigatedFrom()
     {
+    }
+
+    private void OnReloadSettings()
+    {
+        _navigationService.NavigateTo(typeof(SettingsViewModel).FullName, PageParameters.ReloadPage);
     }
 
     private async void OnThemeSwitch(ElementTheme param)

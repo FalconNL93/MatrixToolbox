@@ -3,10 +3,12 @@ using Windows.UI;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
-using WinRT.Interop;
 
 namespace MatrixToolbox.Helpers;
 
+// Helper class to workaround custom title bar bugs.
+// DISCLAIMER: The resource key names and color values used below are subject to change. Do not depend on them.
+// https://github.com/microsoft/TemplateStudio/issues/4516
 internal class TitleBarHelper
 {
     private const int WAINACTIVE = 0x00;
@@ -71,7 +73,7 @@ internal class TitleBarHelper
             Application.Current.Resources["WindowCaptionBackground"] = new SolidColorBrush(Colors.Transparent);
             Application.Current.Resources["WindowCaptionBackgroundDisabled"] = new SolidColorBrush(Colors.Transparent);
 
-            var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
             if (hwnd == GetActiveWindow())
             {
                 SendMessage(hwnd, WMACTIVATE, WAINACTIVE, IntPtr.Zero);

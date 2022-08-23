@@ -3,6 +3,7 @@ using CommunityToolkit.WinUI.UI.Animations;
 using MatrixToolbox.Contracts.Services;
 using MatrixToolbox.Contracts.ViewModels;
 using MatrixToolbox.Helpers;
+using MatrixToolbox.Models;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
@@ -66,26 +67,29 @@ public class NavigationService : INavigationService
 
     public bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false)
     {
+        var reload = parameter is PageParameters.ReloadPage;
         var pageType = _pageService.GetPageType(pageKey);
 
-        if (_frame != null && (_frame.Content?.GetType() != pageType || (parameter != null && !parameter.Equals(_lastParameterUsed))))
+        if (_frame == null || (_frame.Content?.GetType() == pageType && reload == false && (parameter == null || parameter.Equals(_lastParameterUsed))))
         {
-            _frame.Tag = clearNavigation;
-            var vmBeforeNavigation = _frame.GetPageViewModel();
-            var navigated = _frame.Navigate(pageType, parameter);
-            if (navigated)
-            {
-                _lastParameterUsed = parameter;
-                if (vmBeforeNavigation is INavigationAware navigationAware)
-                {
-                    navigationAware.OnNavigatedFrom();
-                }
-            }
+            return false;
+        }
 
+        _frame.Tag = clearNavigation;
+        var vmBeforeNavigation = _frame.GetPageViewModel();
+        var navigated = _frame.Navigate(pageType, parameter);
+        if (!navigated)
+        {
             return navigated;
         }
 
-        return false;
+        _lastParameterUsed = parameter;
+        if (vmBeforeNavigation is INavigationAware navigationAware)
+        {
+            navigationAware.OnNavigatedFrom();
+        }
+
+        return navigated;
     }
 
     public void SetListDataItemForNextConnectedAnimation(object item)

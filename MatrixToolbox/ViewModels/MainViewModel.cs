@@ -24,7 +24,6 @@ public class MainViewModel : ObservableRecipient
         _navigationService = navigationService;
         RefreshCommand = new AsyncRelayCommand(OnRefresh, () => ApiSettingsValid);
         ClearCommand = new RelayCommand(OnClear, () => ApiSettingsValid);
-        ShowSettings = new RelayCommand(OnShowSettings);
         PostServiceNotice = new AsyncRelayCommand<ServiceNotice>(OnPostServiceNotice, _ => ApiSettingsValid);
         _apiOptions = apiOptions.Value;
 
@@ -36,7 +35,6 @@ public class MainViewModel : ObservableRecipient
 
     public ObservableCollection<RoomModel> Rooms { get; } = new();
     public AsyncRelayCommand RefreshCommand { get; }
-    public RelayCommand ShowSettings { get; }
     public RelayCommand ClearCommand { get; }
     public AsyncRelayCommand<ServiceNotice> PostServiceNotice { get; }
 
@@ -53,11 +51,6 @@ public class MainViewModel : ObservableRecipient
     }
 
     public bool ApiSettingsValid => !string.IsNullOrEmpty(_apiOptions.Server) && !string.IsNullOrEmpty(_apiOptions.AccessToken);
-
-    private void OnShowSettings()
-    {
-        _navigationService.NavigateTo(typeof(SettingsViewModel).FullName);
-    }
 
     private async Task OnPostServiceNotice(ServiceNotice? arg)
     {
@@ -81,7 +74,6 @@ public class MainViewModel : ObservableRecipient
         catch (Exception e)
         {
             Debug.WriteLine(e);
-            throw;
         }
     }
 

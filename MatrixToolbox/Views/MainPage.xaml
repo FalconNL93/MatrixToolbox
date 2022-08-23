@@ -9,12 +9,7 @@
     <Grid x:Name="ContentArea">
         <ScrollViewer>
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="80" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Button Command="{x:Bind ViewModel.ShowSettings}" Content="Settings" />
-                <ItemsControl Grid.Row="1" IsEnabled="{x:Bind ViewModel.ApiSettingsValid}">
+                <ItemsControl IsEnabled="{x:Bind ViewModel.ApiSettingsValid}">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Button Command="{x:Bind ViewModel.RefreshCommand}" Content="Refresh" />
