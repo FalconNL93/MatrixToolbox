@@ -6,28 +6,24 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helpers="using:MatrixToolbox.Helpers"
     xmlns:xaml="using:Microsoft.UI.Xaml"
+    NavigationCacheMode="Disabled"
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="58" />
         </Grid.RowDefinitions>
 
-        <TextBlock
-            Grid.Row="0"
-            x:Uid="Settings_Title"
-            Style="{StaticResource PageTitleStyle}" />
-        <StackPanel
-            Grid.Row="1">
+        <StackPanel Grid.Row="0">
+            <TextBlock x:Uid="Settings_Title" Style="{StaticResource PageTitleStyle}" />
             <TextBlock Text="API Settings" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <TextBlock Text="Server" Style="{ThemeResource BaseTextBlockStyle}" />
             <TextBox Text="{x:Bind ViewModel.ApiOptions.Server, Mode=TwoWay}" />
             <TextBlock Text="Access Token" Style="{ThemeResource BaseTextBlockStyle}" />
             <TextBox Text="{x:Bind ViewModel.ApiOptions.AccessToken, Mode=TwoWay}" />
-            <Button Command="{x:Bind ViewModel.SaveSettings}" Content="Save" />
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_Theme" />
@@ -65,18 +61,11 @@
                     </RadioButton>
                 </StackPanel>
             </StackPanel>
-
-            <TextBlock x:Uid="Settings_About" Style="{ThemeResource SubtitleTextBlockStyle}" />
-
-            <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                <TextBlock Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" />
-
-                <TextBlock
-                    x:Uid="Settings_AboutDescription"
-                    Margin="{StaticResource XSmallTopMargin}"
-                    Style="{ThemeResource BodyTextBlockStyle}" />
-                <HyperlinkButton x:Uid="SettingsPage_PrivacyTermsLink" Margin="{StaticResource SettingsPageHyperlinkButtonMargin}" />
-            </StackPanel>
+            <AppBarSeparator />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource MediumBottomMargin}" HorizontalAlignment="Right">
+            <Button Command="{x:Bind ViewModel.SaveSettings}" Margin="{StaticResource SmallRightMargin}" Content="Save" MinWidth="{StaticResource ButtonMinWidth}" />
+            <Button Command="{x:Bind ViewModel.ReloadCommand}" Content="Reload" MinWidth="{StaticResource ButtonMinWidth}" />
         </StackPanel>
     </Grid>
 </Page>

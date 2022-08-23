@@ -9,9 +9,9 @@ public class ThemeSelectorService
 {
     private readonly GeneralOptions _options;
 
-    public ThemeSelectorService(IOptions<GeneralOptions> generalOptions)
+    public ThemeSelectorService(IOptionsMonitor<GeneralOptions> generalOptions)
     {
-        _options = generalOptions.Value;
+        _options = generalOptions.CurrentValue;
     }
 
     public ElementTheme Theme { get; set; } = ElementTheme.Default;

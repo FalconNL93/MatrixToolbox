@@ -1,10 +1,9 @@
-﻿using System.Reflection;
-using System.Windows.Input;
-using Windows.ApplicationModel;
+﻿using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MatrixToolbox.Contracts.Services;
+using MatrixToolbox.Contracts.ViewModels;
 using MatrixToolbox.Core.Models;
-using MatrixToolbox.Helpers;
 using MatrixToolbox.Models;
 using MatrixToolbox.Services;
 using Microsoft.Extensions.Options;
@@ -12,31 +11,36 @@ using Microsoft.UI.Xaml;
 
 namespace MatrixToolbox.ViewModels;
 
-public class SettingsViewModel : ObservableRecipient
+public class SettingsViewModel : ObservableRecipient, INavigationAware
 {
+    private readonly INavigationService _navigationService;
     private readonly SettingsService _settings;
     private readonly ThemeSelectorService _themeSelectorService;
     private ElementTheme _elementTheme;
-    private string _versionDescription;
+
 
     public SettingsViewModel(
+        INavigationService navigationService,
         ThemeSelectorService themeSelectorService,
         SettingsService settings,
-        IOptions<GeneralOptions> generalOptions,
-        IOptions<ApiOptions> apiOptions
+        IOptionsMonitor<GeneralOptions> generalOptions,
+        IOptionsMonitor<ApiOptions> apiOptions
     )
     {
+        GeneralOptions = generalOptions.CurrentValue;
+        ApiOptions = apiOptions.CurrentValue;
+
+        _navigationService = navigationService;
         _themeSelectorService = themeSelectorService;
         _settings = settings;
-        GeneralOptions = generalOptions.Value;
-        ApiOptions = apiOptions.Value;
-        _elementTheme = _themeSelectorService.Theme;
-        _versionDescription = GetVersionDescription();
+        _elementTheme = generalOptions.CurrentValue.Theme;
 
         SaveSettings = new RelayCommand(OnSaveOptions);
         SwitchThemeCommand = new RelayCommand<ElementTheme>(OnThemeSwitch);
+        ReloadCommand = new RelayCommand(OnReload);
     }
 
+    public RelayCommand ReloadCommand { get; }
     public GeneralOptions GeneralOptions { get; }
     public ApiOptions ApiOptions { get; }
 
@@ -48,13 +52,25 @@ public class SettingsViewModel : ObservableRecipient
         set => SetProperty(ref _elementTheme, value);
     }
 
-    public string VersionDescription
+    public ICommand SwitchThemeCommand { get; }
+
+
+    public async void OnNavigatedTo(object parameter)
     {
-        get => _versionDescription;
-        set => SetProperty(ref _versionDescription, value);
+        if (parameter is PageParameters.ReloadPage)
+        {
+            await _themeSelectorService.SetThemeAsync(ElementTheme);
+        }
     }
 
-    public ICommand SwitchThemeCommand { get; }
+    public void OnNavigatedFrom()
+    {
+    }
+
+    private void OnReload()
+    {
+        _navigationService.NavigateTo(GetType().FullName, PageParameters.ReloadPage);
+    }
 
     private void OnSaveOptions()
     {
@@ -70,23 +86,5 @@ public class SettingsViewModel : ObservableRecipient
 
         ElementTheme = param;
         await _themeSelectorService.SetThemeAsync(param);
-    }
-
-    private static string GetVersionDescription()
-    {
-        Version version;
-
-        if (RuntimeHelper.IsMSIX)
-        {
-            var packageVersion = Package.Current.Id.Version;
-
-            version = new Version(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
-        }
-        else
-        {
-            version = Assembly.GetExecutingAssembly().GetName().Version!;
-        }
-
-        return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
     }
 }

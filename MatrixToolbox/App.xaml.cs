@@ -28,7 +28,7 @@ public partial class App : Application
             .UseContentRoot(AppContext.BaseDirectory)
             .ConfigureAppConfiguration((_, config) =>
             {
-                config.AddJsonFile(UserConfigurationFile, true, false);
+                config.AddJsonFile(UserConfigurationFile, true, true);
             })
             .ConfigureServices((context, services) =>
             {
