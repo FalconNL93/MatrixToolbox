@@ -14,58 +14,67 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="58" />
+            <RowDefinition Height="80" />
         </Grid.RowDefinitions>
-
-        <StackPanel Grid.Row="0">
-            <TextBlock x:Uid="Settings_Title" Style="{StaticResource PageTitleStyle}" />
-            <TextBlock Text="API Settings" Style="{ThemeResource SubtitleTextBlockStyle}" />
-            <TextBlock Text="Server" Style="{ThemeResource BaseTextBlockStyle}" />
-            <TextBox Text="{x:Bind ViewModel.ApiOptions.Server, Mode=TwoWay}" />
-            <TextBlock Text="Access Token" Style="{ThemeResource BaseTextBlockStyle}" />
-            <TextBox Text="{x:Bind ViewModel.ApiOptions.AccessToken, Mode=TwoWay}" />
-            <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
-            <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                <TextBlock x:Uid="Settings_Theme" />
-
-                <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                    <RadioButton
-                        x:Uid="Settings_Theme_Light"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}"
-                        FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Light</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                    <RadioButton
-                        x:Uid="Settings_Theme_Dark"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}"
-                        FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Dark</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                    <RadioButton
-                        x:Uid="Settings_Theme_Default"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}"
-                        FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Default</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
+        <ScrollViewer Grid.Row="0">
+            <StackPanel>
+                <TextBlock x:Uid="Settings_Title" Style="{StaticResource PageTitleStyle}" />
+                <TextBlock Text="API Settings" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                <TextBlock Text="Server" Style="{ThemeResource BaseTextBlockStyle}" />
+                <TextBox Text="{x:Bind ViewModel.ApiOptions.Server, Mode=TwoWay}" />
+                <TextBlock Text="Access Token" Style="{ThemeResource BaseTextBlockStyle}" />
+                <TextBox Text="{x:Bind ViewModel.ApiOptions.AccessToken, Mode=TwoWay}" />
+                <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
+                    <TextBlock x:Uid="Settings_Theme" />
+                    <StackPanel Margin="{StaticResource XSmallTopMargin}">
+                        <RadioButton
+                            x:Uid="Settings_Theme_Light"
+                            Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                            IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}"
+                            FontSize="15"
+                            GroupName="AppTheme">
+                            <RadioButton.CommandParameter>
+                                <xaml:ElementTheme>Light</xaml:ElementTheme>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton
+                            x:Uid="Settings_Theme_Dark"
+                            Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                            IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}"
+                            FontSize="15"
+                            GroupName="AppTheme">
+                            <RadioButton.CommandParameter>
+                                <xaml:ElementTheme>Dark</xaml:ElementTheme>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton
+                            x:Uid="Settings_Theme_Default"
+                            Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                            IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}"
+                            FontSize="15"
+                            GroupName="AppTheme">
+                            <RadioButton.CommandParameter>
+                                <xaml:ElementTheme>Default</xaml:ElementTheme>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                    </StackPanel>
                 </StackPanel>
+                <AppBarSeparator />
             </StackPanel>
-            <AppBarSeparator />
-        </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource MediumBottomMargin}" HorizontalAlignment="Right">
-            <Button Command="{x:Bind ViewModel.SaveSettings}" Margin="{StaticResource SmallRightMargin}" Content="Save" MinWidth="{StaticResource ButtonMinWidth}" />
-            <Button Command="{x:Bind ViewModel.ReloadCommand}" Content="Reload" MinWidth="{StaticResource ButtonMinWidth}" />
-        </StackPanel>
+        </ScrollViewer>
+        <Grid Row="1" BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Button Command="{x:Bind ViewModel.GoBack}" Margin="{StaticResource SmallRightMargin}" Content="Back" MinWidth="{StaticResource ButtonMinWidth}" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="{StaticResource MediumTopBottomMargin}" HorizontalAlignment="Right">
+                <Button Command="{x:Bind ViewModel.SaveSettings}" Margin="{StaticResource SmallRightMargin}" Content="Save" MinWidth="{StaticResource ButtonMinWidth}" Style="{StaticResource AccentButtonStyle}" />
+                <Button Command="{x:Bind ViewModel.ReloadCommand}" Content="Reload" MinWidth="{StaticResource ButtonMinWidth}" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

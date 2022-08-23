@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MatrixToolbox.Contracts.Services;
 using MatrixToolbox.Core.Models;
 using MatrixToolbox.Core.Services;
 using Microsoft.Extensions.Options;
@@ -12,15 +13,18 @@ public class MainViewModel : ObservableRecipient
 {
     private readonly AdminService _adminService;
     private readonly ApiOptions _apiOptions;
+    private readonly INavigationService _navigationService;
     private string _response = string.Empty;
     private ServiceNotice _serviceNotice = new();
 
 
-    public MainViewModel(AdminService adminService, IOptions<ApiOptions> apiOptions)
+    public MainViewModel(AdminService adminService, IOptions<ApiOptions> apiOptions, INavigationService navigationService)
     {
         _adminService = adminService;
+        _navigationService = navigationService;
         RefreshCommand = new AsyncRelayCommand(OnRefresh, () => ApiSettingsValid);
         ClearCommand = new RelayCommand(OnClear, () => ApiSettingsValid);
+        ShowSettings = new RelayCommand(OnShowSettings);
         PostServiceNotice = new AsyncRelayCommand<ServiceNotice>(OnPostServiceNotice, _ => ApiSettingsValid);
         _apiOptions = apiOptions.Value;
 
@@ -32,6 +36,7 @@ public class MainViewModel : ObservableRecipient
 
     public ObservableCollection<RoomModel> Rooms { get; } = new();
     public AsyncRelayCommand RefreshCommand { get; }
+    public RelayCommand ShowSettings { get; }
     public RelayCommand ClearCommand { get; }
     public AsyncRelayCommand<ServiceNotice> PostServiceNotice { get; }
 
@@ -48,6 +53,11 @@ public class MainViewModel : ObservableRecipient
     }
 
     public bool ApiSettingsValid => !string.IsNullOrEmpty(_apiOptions.Server) && !string.IsNullOrEmpty(_apiOptions.AccessToken);
+
+    private void OnShowSettings()
+    {
+        _navigationService.NavigateTo(typeof(SettingsViewModel).FullName);
+    }
 
     private async Task OnPostServiceNotice(ServiceNotice? arg)
     {

@@ -7,32 +7,38 @@
     mc:Ignorable="d">
 
     <Grid>
-        <ItemsControl IsEnabled="{x:Bind ViewModel.ApiSettingsValid}">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Button Command="{x:Bind ViewModel.RefreshCommand}" Content="Refresh" />
-                    <Button Command="{x:Bind ViewModel.ClearCommand}" Content="Clear" />
-                </StackPanel>
-                <TextBlock Text="{x:Bind ViewModel.Rooms.Count, Mode=OneWay}" />
+        <ScrollViewer>
+            <Grid>
+                <Button Command="{x:Bind ViewModel.ShowSettings}" Content="Settings" />
 
-                <ListBox ItemsSource="{x:Bind ViewModel.Rooms, Mode=OneWay}" DisplayMemberPath="Name" Height="164" />
-            </StackPanel>
-            <StackPanel>
-                <TextBlock Text="UserId:" />
-                <TextBox Text="{x:Bind ViewModel.ServiceNotice.UserId, Mode=TwoWay}" />
-                <TextBlock Text="Message" />
-                <TextBox Text="{x:Bind ViewModel.ServiceNotice.Content.Body, Mode=TwoWay}" />
-                <TextBlock Text="Message Type" />
-                <TextBox Text="{x:Bind ViewModel.ServiceNotice.Content.Msgtype, Mode=TwoWay}" />
-                <Button Command="{x:Bind ViewModel.PostServiceNotice}" CommandParameter="{x:Bind ViewModel.ServiceNotice, Mode = TwoWay}" Content="Post" />
+                <ItemsControl IsEnabled="{x:Bind ViewModel.ApiSettingsValid}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Command="{x:Bind ViewModel.RefreshCommand}" Content="Refresh" />
+                            <Button Command="{x:Bind ViewModel.ClearCommand}" Content="Clear" />
+                        </StackPanel>
+                        <TextBlock Text="{x:Bind ViewModel.Rooms.Count, Mode=OneWay}" />
 
-                <TextBlock Text="Response" />
-                <TextBox
-                    Text="{x:Bind ViewModel.Response, Mode=OneWay}"
-                    TextWrapping="Wrap"
-                    MinHeight="10"
-                    AcceptsReturn="True" />
-            </StackPanel>
-        </ItemsControl>
+                        <ListBox ItemsSource="{x:Bind ViewModel.Rooms, Mode=OneWay}" DisplayMemberPath="Name" Height="164" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="UserId:" />
+                        <TextBox Text="{x:Bind ViewModel.ServiceNotice.UserId, Mode=TwoWay}" />
+                        <TextBlock Text="Message" />
+                        <TextBox Text="{x:Bind ViewModel.ServiceNotice.Content.Body, Mode=TwoWay}" />
+                        <TextBlock Text="Message Type" />
+                        <TextBox Text="{x:Bind ViewModel.ServiceNotice.Content.Msgtype, Mode=TwoWay}" />
+                        <Button Command="{x:Bind ViewModel.PostServiceNotice}" CommandParameter="{x:Bind ViewModel.ServiceNotice, Mode = TwoWay}" Content="Post" />
+
+                        <TextBlock Text="Response" />
+                        <TextBox
+                            Text="{x:Bind ViewModel.Response, Mode=OneWay}"
+                            TextWrapping="Wrap"
+                            MinHeight="10"
+                            AcceptsReturn="True" />
+                    </StackPanel>
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>
