@@ -25,11 +25,13 @@ public sealed partial class ShellPage : Page
         App.MainWindow.SetTitleBar(AppTitleBar);
         App.MainWindow.Activated += MainWindow_Activated;
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
-        
-        WeakReferenceMessenger.Default.Register<SetUpdateInfoBarMessage>(this, UpdateInfoBar);
+
+        WeakReferenceMessenger.Default.Register<UpdateInfoBarMessage, string>(this, nameof(ShellPage), UpdateInfoBar);
     }
-    
-    private void UpdateInfoBar(object recipient, SetUpdateInfoBarMessage message)
+
+    public ShellViewModel ViewModel { get; }
+
+    private void UpdateInfoBar(object recipient, UpdateInfoBarMessage message)
     {
         InfoBar.Title = message.InfoBarModel.Title;
         InfoBar.Message = message.InfoBarModel.Message;
@@ -37,8 +39,6 @@ public sealed partial class ShellPage : Page
         InfoBar.Severity = message.InfoBarModel.Severity;
         InfoBar.IsClosable = message.InfoBarModel.IsClosable;
     }
-
-    public ShellViewModel ViewModel { get; }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {

@@ -3,12 +3,12 @@ using MatrixToolbox.Models;
 
 namespace MatrixToolbox.Messages;
 
-public class SetUpdateInfoBarMessage : RequestMessage<InfoBarModel>
+public class UpdateInfoBarMessage : RequestMessage<InfoBarModel>
 {
-    public InfoBarModel InfoBarModel { get; }
-
-    public SetUpdateInfoBarMessage(InfoBarModel infoBarModel)
+    public UpdateInfoBarMessage(InfoBarModel infoBarModel)
     {
         InfoBarModel = infoBarModel;
     }
+
+    public InfoBarModel InfoBarModel { get; }
 }

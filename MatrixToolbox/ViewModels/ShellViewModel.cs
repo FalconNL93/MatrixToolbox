@@ -31,7 +31,7 @@ public class ShellViewModel : ViewModelBase
         get => _selected;
         set => SetProperty(ref _selected, value);
     }
-    
+
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
         IsBackEnabled = NavigationService.CanGoBack;

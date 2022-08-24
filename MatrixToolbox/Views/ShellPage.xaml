@@ -67,7 +67,7 @@
             </i:Interaction.Behaviors>
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
                 <ItemsControl>
-                    <InfoBar x:Name="InfoBar" />
+                    <InfoBar x:Name="InfoBar" Margin="{StaticResource SmallBottomMargin}" />
                     <Frame x:Name="NavigationFrame" />
                 </ItemsControl>
             </Grid>
