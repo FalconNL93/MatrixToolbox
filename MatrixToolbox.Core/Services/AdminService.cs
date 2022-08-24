@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Text;
 using MatrixToolbox.Core.Models;
 using Microsoft.Extensions.Options;
@@ -35,19 +36,27 @@ public class AdminService
     private async Task<T> GetV1<T>(string requestUri) where T : class
     {
         var response = await GetV1(requestUri);
-        return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+        Debug.WriteLine(await response.Content.ReadAsStringAsync());
+        return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync(), _serializerOptions);
     }
 
     private async Task<HttpResponseMessage> PostV1(string requestUri, object content)
     {
         var body = JsonConvert.SerializeObject(content, _serializerOptions);
-        return await _client.PostAsync($"/_synapse/admin/v1/{requestUri}", new StringContent(body, Encoding.UTF8, "application/json"
+        var response = await _client.PostAsync($"/_synapse/admin/v1/{requestUri}", new StringContent(body, Encoding.UTF8, "application/json"
         ));
+
+        return response;
     }
 
     public async Task<RoomsModel> GetRooms()
     {
         return await GetV1<RoomsModel>("rooms");
+    }
+
+    public async Task<VersionModel> GetVersion()
+    {
+        return await GetV1<VersionModel>("server_version");
     }
 
     public async Task<ApiResponse<ServiceNoticeResult>> PostServiceNotice(ServiceNotice serviceNotice)

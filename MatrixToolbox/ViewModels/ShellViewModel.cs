@@ -1,11 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using MatrixToolbox.Contracts.Services;
+﻿using MatrixToolbox.Contracts.Services;
 using MatrixToolbox.Views;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace MatrixToolbox.ViewModels;
 
-public class ShellViewModel : ObservableRecipient
+public class ShellViewModel : ViewModelBase
 {
     private bool _isBackEnabled;
     private object? _selected;

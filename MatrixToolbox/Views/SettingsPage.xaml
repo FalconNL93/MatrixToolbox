@@ -5,10 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helpers="using:MatrixToolbox.Helpers"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:xaml="using:Microsoft.UI.Xaml"
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+        <converters:StringFormatConverter x:Key="StringFormat" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -19,11 +21,20 @@
             <Grid>
                 <StackPanel>
                     <StackPanel Margin="{StaticResource MediumBottomMargin}">
+                        <InfoBar IsOpen="{x:Bind ViewModel.InfoBarModel.IsOpen, Mode=OneWay}"
+                                 Title="{x:Bind ViewModel.InfoBarModel.Title, Mode=OneWay}"
+                                 Message="{x:Bind ViewModel.InfoBarModel.Message, Mode=OneWay}"
+                                 Severity="{x:Bind ViewModel.InfoBarModel.Severity, Mode=OneWay}"
+                                 IsClosable="{x:Bind ViewModel.InfoBarModel.IsClosable, Mode=OneWay}" />
                         <TextBlock Text="API Settings" Style="{ThemeResource SubtitleTextBlockStyle}" />
                         <TextBlock Text="Server" Style="{ThemeResource BaseTextBlockStyle}" />
                         <TextBox Text="{x:Bind ViewModel.ApiOptions.Server, Mode=TwoWay}" />
                         <TextBlock Text="Access Token" Style="{ThemeResource BaseTextBlockStyle}" />
                         <TextBox Text="{x:Bind ViewModel.ApiOptions.AccessToken, Mode=TwoWay}" />
+                        <Button Command="{x:Bind ViewModel.TestApiSettings}" Margin="{StaticResource SmallTopMargin}" Content="Test" MinWidth="{StaticResource ButtonMinWidth}" />
+                        <TextBlock Margin="{StaticResource SmallTopMargin}"
+                                   Text="{x:Bind ViewModel.VersionResponse.ServerVersion, Mode=OneWay,
+                        Converter={StaticResource StringFormat}, ConverterParameter='Server version: {0}'}" />
                     </StackPanel>
 
                     <StackPanel>

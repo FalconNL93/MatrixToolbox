@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MatrixToolbox.Contracts.Services;
 using MatrixToolbox.Core.Models;
@@ -9,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace MatrixToolbox.ViewModels;
 
-public class MainViewModel : ObservableRecipient
+public class MainViewModel : ViewModelBase
 {
     private readonly AdminService _adminService;
     private readonly ApiOptions _apiOptions;
