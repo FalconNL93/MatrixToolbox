@@ -8,25 +8,27 @@ namespace MatrixToolbox.Services;
 
 public class InfoBarService : IInfoBarService
 {
-    public void SetStatus(string title, string message, InfoBarSeverity severity = InfoBarSeverity.Informational, int timeout = 10)
+    private readonly WeakReferenceMessenger _messenger = WeakReferenceMessenger.Default;
+
+    public async void SetStatus(string title, string message, InfoBarSeverity severity = InfoBarSeverity.Informational, int timeout = 0)
     {
-        var infoBarModel = new InfoBarModel
+        _messenger.Send(new SetUpdateInfoBarMessage(new InfoBarModel
         {
             Title = title,
             Message = message,
             IsOpen = true,
             IsClosable = false,
             Severity = severity,
-        };
-
-        WeakReferenceMessenger.Default.Send(new SetUpdateInfoBarMessage(infoBarModel));
-    }
-    
-    public void ClearStatus()
-    {
-        WeakReferenceMessenger.Default.Send(new SetUpdateInfoBarMessage(new InfoBarModel
-        {
-            IsOpen = false
         }));
+
+        if (timeout <= 0)
+        {
+            return;
+        }
+
+        await Task.Delay(TimeSpan.FromSeconds(timeout));
+        ClearStatus();
     }
+
+    public void ClearStatus() => _messenger.Send(new SetUpdateInfoBarMessage(new InfoBarModel {IsOpen = false}));
 }

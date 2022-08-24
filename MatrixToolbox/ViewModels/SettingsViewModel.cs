@@ -85,7 +85,6 @@ public class SettingsViewModel : ViewModelBase, INavigationAware
     private async Task OnTestApiSettings()
     {
         _infoBarService.SetStatus("Testing", "Testing API Connection...");
-        await Task.Delay(TimeSpan.FromSeconds(5));
         VersionResponse = await _adminService.GetVersion();
 
         _infoBarService.SetStatus("OK", "API Connection successful", InfoBarSeverity.Success, 5);
