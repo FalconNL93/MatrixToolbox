@@ -15,6 +15,7 @@ namespace MatrixToolbox.ViewModels;
 public class SettingsViewModel : ViewModelBase, INavigationAware
 {
     private readonly AdminService _adminService;
+    private readonly IInfoBarService _infoBarService;
     private readonly INavigationService _navigationService;
     private readonly SettingsService _settings;
     private readonly IThemeSelectorService _themeSelectorService;
@@ -27,7 +28,8 @@ public class SettingsViewModel : ViewModelBase, INavigationAware
         SettingsService settings,
         IOptionsMonitor<GeneralOptions> generalOptions,
         IOptionsMonitor<ApiOptions> apiOptions,
-        AdminService adminService
+        AdminService adminService,
+        IInfoBarService infoBarService
     )
     {
         GeneralOptions = generalOptions.CurrentValue;
@@ -37,6 +39,7 @@ public class SettingsViewModel : ViewModelBase, INavigationAware
         _themeSelectorService = themeSelectorService;
         _settings = settings;
         _adminService = adminService;
+        _infoBarService = infoBarService;
         _elementTheme = generalOptions.CurrentValue.Theme;
 
         SaveSettings = new RelayCommand(() => _settings.Save());
@@ -81,11 +84,11 @@ public class SettingsViewModel : ViewModelBase, INavigationAware
 
     private async Task OnTestApiSettings()
     {
-        await SetStatus("Testing", "Testing API Connection...");
+        _infoBarService.SetStatus("Testing", "Testing API Connection...");
         await Task.Delay(TimeSpan.FromSeconds(5));
         VersionResponse = await _adminService.GetVersion();
 
-        await SetStatus("OK", "API Connection successful", InfoBarSeverity.Success, 5);
+        _infoBarService.SetStatus("OK", "API Connection successful", InfoBarSeverity.Success, 5);
     }
 
     private void OnReloadSettings()

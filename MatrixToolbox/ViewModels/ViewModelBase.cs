@@ -1,27 +1,21 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using MatrixToolbox.Contracts.Services;
+using MatrixToolbox.Contracts.ViewModels;
 using MatrixToolbox.Models;
+using MatrixToolbox.Services;
 using Microsoft.UI.Xaml.Controls;
 
 namespace MatrixToolbox.ViewModels;
 
-public abstract class ViewModelBase : ObservableRecipient
+public abstract class ViewModelBase : ObservableRecipient, INavigationAware
 {
-    public InfoBarModel InfoBarModel { get; set; } = new();
-
-    protected async Task SetStatus(string title, string message, InfoBarSeverity severity = InfoBarSeverity.Informational, int timeout = 10)
+    public void OnNavigatedTo(object parameter)
     {
-        InfoBarModel.Title = title;
-        InfoBarModel.Message = message;
-        InfoBarModel.IsOpen = true;
-        InfoBarModel.IsClosable = false;
-        InfoBarModel.Severity = severity;
+        var infoBar = App.GetService<IInfoBarService>();
+        infoBar.ClearStatus();
+    }
 
-        if (timeout <= 0)
-        {
-            return;
-        }
-
-        await Task.Delay(TimeSpan.FromSeconds(timeout));
-        InfoBarModel.IsOpen = false;
+    public void OnNavigatedFrom()
+    {
     }
 }

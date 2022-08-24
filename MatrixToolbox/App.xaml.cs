@@ -52,6 +52,7 @@ public partial class App : Application
                     services.AddTransient<ShellPage>();
                     services.AddTransient<ShellViewModel>();
 
+                    services.AddSingleton<IInfoBarService, InfoBarService>();
                     services.AddSingleton<SettingsService>();
                     services.AddHttpClient<AdminService>();
 

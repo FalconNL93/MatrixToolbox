@@ -1,4 +1,6 @@
-﻿using MatrixToolbox.ViewModels;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using MatrixToolbox.Messages;
+using MatrixToolbox.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 
 namespace MatrixToolbox.Views;

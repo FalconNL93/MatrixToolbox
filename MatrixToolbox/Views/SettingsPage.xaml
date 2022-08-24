@@ -21,11 +21,6 @@
             <Grid>
                 <StackPanel>
                     <StackPanel Margin="{StaticResource MediumBottomMargin}">
-                        <InfoBar IsOpen="{x:Bind ViewModel.InfoBarModel.IsOpen, Mode=OneWay}"
-                                 Title="{x:Bind ViewModel.InfoBarModel.Title, Mode=OneWay}"
-                                 Message="{x:Bind ViewModel.InfoBarModel.Message, Mode=OneWay}"
-                                 Severity="{x:Bind ViewModel.InfoBarModel.Severity, Mode=OneWay}"
-                                 IsClosable="{x:Bind ViewModel.InfoBarModel.IsClosable, Mode=OneWay}" />
                         <TextBlock Text="API Settings" Style="{ThemeResource SubtitleTextBlockStyle}" />
                         <TextBlock Text="Server" Style="{ThemeResource BaseTextBlockStyle}" />
                         <TextBox Text="{x:Bind ViewModel.ApiOptions.Server, Mode=TwoWay}" />

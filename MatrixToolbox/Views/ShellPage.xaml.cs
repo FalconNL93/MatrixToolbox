@@ -1,6 +1,8 @@
 ﻿using Windows.System;
+using CommunityToolkit.Mvvm.Messaging;
 using MatrixToolbox.Contracts.Services;
 using MatrixToolbox.Helpers;
+using MatrixToolbox.Messages;
 using MatrixToolbox.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -23,6 +25,17 @@ public sealed partial class ShellPage : Page
         App.MainWindow.SetTitleBar(AppTitleBar);
         App.MainWindow.Activated += MainWindow_Activated;
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
+        
+        WeakReferenceMessenger.Default.Register<SetUpdateInfoBarMessage>(this, UpdateInfoBar);
+    }
+    
+    private void UpdateInfoBar(object recipient, SetUpdateInfoBarMessage message)
+    {
+        InfoBar.Title = message.InfoBarModel.Title;
+        InfoBar.Message = message.InfoBarModel.Message;
+        InfoBar.IsOpen = message.InfoBarModel.IsOpen;
+        InfoBar.Severity = message.InfoBarModel.Severity;
+        InfoBar.IsClosable = message.InfoBarModel.IsClosable;
     }
 
     public ShellViewModel ViewModel { get; }

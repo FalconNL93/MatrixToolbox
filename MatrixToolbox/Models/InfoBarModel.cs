@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace MatrixToolbox.Models;
 
-public class InfoBarModel : INotifyPropertyChanged
+public class InfoBarModel
 {
     private bool _isClosable;
     private bool _isOpen;
