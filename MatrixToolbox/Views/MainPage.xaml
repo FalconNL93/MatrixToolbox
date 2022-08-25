@@ -4,13 +4,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <converters:StringFormatConverter x:Key="StringFormat" />
+    </Page.Resources>
     <Grid x:Name="ContentArea">
         <ScrollViewer>
             <Grid>
                 <ItemsControl IsEnabled="{x:Bind ViewModel.ApiSettingsValid}" HorizontalAlignment="Stretch">
-                    <Expander Header="Channels" IsExpanded="True" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                    <Expander Header="Rooms" IsExpanded="True" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                         <Expander.Content>
                             <Grid HorizontalAlignment="Left">
                                 <Grid.ColumnDefinitions>
@@ -18,13 +21,15 @@
                                     <ColumnDefinition Width="250" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0">
-                                    <TextBlock Text="{x:Bind ViewModel.Rooms.Count, Mode=OneWay}" />
                                     <ListBox ItemsSource="{x:Bind ViewModel.Rooms, Mode=OneWay}" DisplayMemberPath="Name" Height="164"
                                              SelectedItem="{x:Bind ViewModel.SelectedRoom, Mode=TwoWay}" />
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                <StackPanel Grid.Column="1">
                                     <Button Command="{x:Bind ViewModel.RefreshCommand}" Content="Refresh" Margin="{StaticResource SmallBottomMargin}" />
                                     <Button Command="{x:Bind ViewModel.DeleteRoomCommand}" CommandParameter="{x:Bind ViewModel.SelectedRoom, Mode=OneWay}" Content="Delete" Margin="{StaticResource SmallBottomMargin}" />
+                                    <TextBlock Margin="{StaticResource SmallTopMargin}"
+                                               Text="{x:Bind ViewModel.Rooms.Count, Mode=OneWay,
+                        Converter={StaticResource StringFormat}, ConverterParameter='Rooms: {0}'}" />
                                 </StackPanel>
                             </Grid>
                         </Expander.Content>
