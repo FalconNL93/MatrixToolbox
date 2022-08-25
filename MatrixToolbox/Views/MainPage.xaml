@@ -21,15 +21,12 @@
                                     <ColumnDefinition Width="250" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0">
-                                    <ListBox ItemsSource="{x:Bind ViewModel.Rooms, Mode=OneWay}" DisplayMemberPath="Name" Height="164"
-                                             SelectedItem="{x:Bind ViewModel.SelectedRoom, Mode=TwoWay}" />
+                                    <ListBox ItemsSource="{x:Bind ViewModel.Rooms, Mode=OneWay}" DisplayMemberPath="Name" Height="164" SelectedItem="{x:Bind ViewModel.SelectedRoom, Mode=TwoWay}" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="1">
                                     <Button Command="{x:Bind ViewModel.RefreshCommand}" Content="Refresh" Margin="{StaticResource SmallBottomMargin}" />
                                     <Button Command="{x:Bind ViewModel.DeleteRoomCommand}" CommandParameter="{x:Bind ViewModel.SelectedRoom, Mode=OneWay}" Content="Delete" Margin="{StaticResource SmallBottomMargin}" />
-                                    <TextBlock Margin="{StaticResource SmallTopMargin}"
-                                               Text="{x:Bind ViewModel.Rooms.Count, Mode=OneWay,
-                        Converter={StaticResource StringFormat}, ConverterParameter='Rooms: {0}'}" />
+                                    <TextBlock Margin="{StaticResource SmallTopMargin}" Text="{x:Bind ViewModel.Rooms.Count, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter='Rooms: {0}'}" />
                                 </StackPanel>
                             </Grid>
                         </Expander.Content>

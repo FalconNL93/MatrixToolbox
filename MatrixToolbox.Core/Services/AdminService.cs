@@ -49,14 +49,48 @@ public class AdminService
         return response;
     }
 
+    private async Task<HttpResponseMessage> PostV2(string requestUri, object content)
+    {
+        var body = JsonConvert.SerializeObject(content, _serializerOptions);
+        var response = await _client.PostAsync($"/_synapse/admin/v2/{requestUri}", new StringContent(body, Encoding.UTF8, "application/json"
+        ));
+
+        return response;
+    }
+
+    private async Task<HttpResponseMessage> DeleteV2(string requestUri, object content)
+    {
+        var body = JsonConvert.SerializeObject(content, _serializerOptions);
+
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri($"/_synapse/admin/v2/{requestUri}"),
+            Content = new StringContent(body, Encoding.UTF8, "application/json")
+        };
+
+        var response = await _client.SendAsync(request);
+
+        return response;
+    }
+
     public async Task<RoomsModel> GetRooms()
     {
         return await GetV1<RoomsModel>("rooms");
     }
-    
-    public async Task<RoomsModel> DeleteRoom(RoomModel room)
+
+    public async Task DeleteRoom(RoomModel room)
     {
-        return await GetV1<RoomsModel>("rooms");
+        var request = await PostV2($"rooms/{room.RoomId}", new
+        {
+            new_room_user_id = "",
+            room_name = "Content Violation Notification",
+            message = "Bad Room has been shutdown due to content violations on this server. Please review our Terms of Service.",
+            block = true,
+            purge = true
+        });
+
+        Debug.WriteLine(await request.Content.ReadAsStringAsync());
     }
 
     public async Task<VersionModel> GetVersion()
