@@ -15,7 +15,7 @@ public class MainViewModel : ViewModelBase
     private readonly INavigationService _navigationService;
     private string _response = string.Empty;
     private ServiceNotice _serviceNotice = new();
-    private RoomModel? _selectedRoom = new();
+    private RoomModel? _selectedRoom;
 
     public RoomModel? SelectedRoom
     {
