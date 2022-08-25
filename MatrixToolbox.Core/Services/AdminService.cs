@@ -26,6 +26,7 @@ public class AdminService
 
         _client.BaseAddress = new Uri(_apiOptions.Server);
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _apiOptions.AccessToken);
+        _client.Timeout = TimeSpan.FromSeconds(1);
     }
 
     private async Task<HttpResponseMessage> GetV1(string requestUri)
@@ -36,7 +37,6 @@ public class AdminService
     private async Task<T> GetV1<T>(string requestUri) where T : class
     {
         var response = await GetV1(requestUri);
-        Debug.WriteLine(await response.Content.ReadAsStringAsync());
         return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync(), _serializerOptions);
     }
 
@@ -50,6 +50,11 @@ public class AdminService
     }
 
     public async Task<RoomsModel> GetRooms()
+    {
+        return await GetV1<RoomsModel>("rooms");
+    }
+    
+    public async Task<RoomsModel> DeleteRoom(RoomModel room)
     {
         return await GetV1<RoomsModel>("rooms");
     }

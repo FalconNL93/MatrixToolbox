@@ -22,6 +22,7 @@
                        TextWrapping="NoWrap"
                        Style="{StaticResource CaptionTextBlockStyle}"
                        Margin="28,0,0,0" />
+
         </Grid>
         <NavigationView
             x:Name="NavigationViewControl"
@@ -66,10 +67,12 @@
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
-                <ItemsControl>
-                    <InfoBar x:Name="InfoBar" Margin="{StaticResource SmallBottomMargin}" />
-                    <Frame x:Name="NavigationFrame" />
-                </ItemsControl>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <InfoBar Grid.Row="0" x:Name="InfoBar" Margin="{StaticResource SmallBottomMargin}" />
+                <Frame Grid.Row="1" x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>
     </Grid>

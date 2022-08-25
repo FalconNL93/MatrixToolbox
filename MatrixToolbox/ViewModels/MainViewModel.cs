@@ -15,6 +15,17 @@ public class MainViewModel : ViewModelBase
     private readonly INavigationService _navigationService;
     private string _response = string.Empty;
     private ServiceNotice _serviceNotice = new();
+    private RoomModel? _selectedRoom = new();
+
+    public RoomModel? SelectedRoom
+    {
+        get => _selectedRoom;
+        set
+        {
+            Debug.WriteLine($"Changed {value}");
+            SetProperty(ref _selectedRoom, value);
+        }
+    }
 
 
     public MainViewModel(AdminService adminService, IOptions<ApiOptions> apiOptions, INavigationService navigationService)
@@ -24,6 +35,7 @@ public class MainViewModel : ViewModelBase
         RefreshCommand = new AsyncRelayCommand(OnRefresh, () => ApiSettingsValid);
         ClearCommand = new RelayCommand(OnClear, () => ApiSettingsValid);
         PostServiceNotice = new AsyncRelayCommand<ServiceNotice>(OnPostServiceNotice, _ => ApiSettingsValid);
+        DeleteRoomCommand = new AsyncRelayCommand<RoomModel>(OnDeleteRoom, _ => ApiSettingsValid);
         _apiOptions = apiOptions.Value;
 
         if (!string.IsNullOrEmpty(_apiOptions.TestUser))
@@ -32,8 +44,19 @@ public class MainViewModel : ViewModelBase
         }
     }
 
+    private async Task OnDeleteRoom(RoomModel? room)
+    {
+        if (room == null)
+        {
+            return;
+        }
+
+        await _adminService.DeleteRoom(room);
+    }
+
     public ObservableCollection<RoomModel> Rooms { get; } = new();
     public AsyncRelayCommand RefreshCommand { get; }
+    public AsyncRelayCommand<RoomModel> DeleteRoomCommand { get; }
     public RelayCommand ClearCommand { get; }
     public AsyncRelayCommand<ServiceNotice> PostServiceNotice { get; }
 

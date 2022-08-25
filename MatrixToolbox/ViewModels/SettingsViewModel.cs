@@ -94,7 +94,7 @@ public class SettingsViewModel : ViewModelBase, INavigationAware
         }
         catch (Exception e)
         {
-            _infoBarService.SetStatus("Fail", "API Connection failed", InfoBarSeverity.Error);
+            _infoBarService.SetStatus("Fail", $"API Connection failed {e.Message}", InfoBarSeverity.Error);
         }
     }
 

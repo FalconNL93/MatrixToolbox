@@ -9,15 +9,27 @@
     <Grid x:Name="ContentArea">
         <ScrollViewer>
             <Grid>
-                <ItemsControl IsEnabled="{x:Bind ViewModel.ApiSettingsValid}">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Command="{x:Bind ViewModel.RefreshCommand}" Content="Refresh" />
-                            <Button Command="{x:Bind ViewModel.ClearCommand}" Content="Clear" />
-                        </StackPanel>
-                        <TextBlock Text="{x:Bind ViewModel.Rooms.Count, Mode=OneWay}" />
-                        <ListBox ItemsSource="{x:Bind ViewModel.Rooms, Mode=OneWay}" DisplayMemberPath="Name" Height="164" />
-                    </StackPanel>
+                <ItemsControl IsEnabled="{x:Bind ViewModel.ApiSettingsValid}" HorizontalAlignment="Stretch">
+                    <Expander Header="Channels" IsExpanded="True" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                        <Expander.Content>
+                            <Grid HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="250" />
+                                    <ColumnDefinition Width="250" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{x:Bind ViewModel.Rooms.Count, Mode=OneWay}" />
+                                    <ListBox ItemsSource="{x:Bind ViewModel.Rooms, Mode=OneWay}" DisplayMemberPath="Name" Height="164" 
+                                             SelectedItem="{x:Bind ViewModel.SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                    <Button Command="{x:Bind ViewModel.RefreshCommand}" Content="Refresh" Margin="{StaticResource SmallBottomMargin}" />
+                                    <Button Command="{x:Bind ViewModel.DeleteRoomCommand}" CommandParameter="{x:Bind ViewModel.SelectedRoom}" Content="Delete" Margin="{StaticResource SmallBottomMargin}" />
+                                </StackPanel>
+                            </Grid>
+                        </Expander.Content>
+                    </Expander>
+
                     <StackPanel>
                         <TextBlock Text="UserId:" />
                         <TextBox Text="{x:Bind ViewModel.ServiceNotice.UserId, Mode=TwoWay}" />
